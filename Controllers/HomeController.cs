@@ -25,6 +25,17 @@ namespace session_management.Controllers
         {
             HttpContext.Session.SetString(SessionName, "Henry");
             HttpContext.Session.SetInt32(SessionAge, 28);
+            if(!HttpContext.Request.Cookies.ContainsKey("first_request"))
+            {
+                HttpContext.Response.Cookies.Append("first_request", DateTime.Now.ToString());
+                ViewBag.Message = "Welcome, new visitor!";
+            }
+            else
+            {
+                DateTime firstRequest = DateTime.Parse(HttpContext.Request.Cookies["first_request"]);
+                ViewBag.Message =  "Welcome back, user! You first visited us on: " + firstRequest.ToString();
+            }
+            
             return View();
         }
 
